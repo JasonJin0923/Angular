@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>angular directive</title>
+	<script src="../lib/angular.min.1.5.js"></script>
+	<style>
+		textarea{
+			width:300px;
+			height:100px;
+		}
+	</style>
+</head>
+<body>
+	
+<div ng-app="myApp">
+	<div ng-controller="myCon">
+		<textarea ng-model="text" ng-list=","></textarea>
+		
+		<p>{{ text | json }}</p>
+		
+	</div>
+</div>
+
+<script>
+	//一个页面只允许有一个app
+	var app = angular.module('myApp', []);                   //创建一个moudle对象
+	//绑定一个控制器
+	//注入服务
+	//$scope 是一个服务  表示当前控制器
+	app.controller('myCon', ['$scope',function($scope) {
+	
+		
+	}]);
+	
+</script>
+
+</body>
+</html>

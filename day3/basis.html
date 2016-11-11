@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div ng-app="myApp" ng-controller="myAppCon">
+			<!-- 使用自定义指令 -->
+			<div class="first-test"></div>
+		</div>
+		<script>
+		var app = angular.module('myApp', []);
+		app.directive("firstTest", function() {
+		    return {
+		    	restrict : "EAC",
+		        template : "<p>第一个自定义指令!</p>"
+		    };
+		});
+		
+		app.controller('myAppCon', ['$scope',function($scope) {
+			
+		}]);
+		</script>
+	</body>
+</html>

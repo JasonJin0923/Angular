@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="../lib/angular.min.1.5.js" ></script>
+	</head>
+	<body>
+		<div ng-app="myApp" ng-controller="myAppCon">
+		 	<p>{{ text }}</p>
+		</div>
+		<script>
+			angular.module('myApp', [])
+				.controller('myAppCon', ['$scope','$http', function($scope,$http) {
+				  	$scope.src = "jscss.cc.ico";
+				  	$http({
+				  		url : '/ajax/api/path',
+				  		method: 'GET',
+				  	}).then(function successCallback(response) {
+				    	return response.data;
+					}).then(function(data){
+						$scope.text = data;
+					}).catch(function(error){
+						console.log(error);
+					});
+				}]);
+		</script>
+	</body>
+</html>

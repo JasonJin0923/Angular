@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script>
+			console.time('Promise');
+			new Promise(function (resolve, reject) {
+			    setTimeout(function () {
+			        resolve("定时器执行结束");
+			    },1000 * 2);
+			}).then(function (result) {
+				return new Promise(function (resolve, reject) {
+					setTimeout(function(){
+						resolve({
+					    	"data":result
+					   	})
+					},1000 * 2)
+				})
+			}).then(function(data){
+				console.log(data);
+				console.timeEnd('Promise');
+			})
+		</script>
+	</body>
+</html>

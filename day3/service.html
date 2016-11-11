@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="../lib/angular.min.1.5.js" ></script>
+	</head>
+	<body>
+		<div>
+			<h1>{{number}}</h1>
+		</div>
+	</body>
+	<script>
+		//实例化一个 module
+		var app = angular.module('myApp', []);
+		//在 app 下创建一个 service
+		app.service('number', function() {
+		    this.sum = function (num1,num2) {
+		        return num1 + num2;
+		    }
+		});
+		app.service('mydata', ['$http',function($http) {
+		    this.getdata = function () {
+		    	return new Promise(function(resolve,error){
+			        $http.get('../day2/data.json')
+			        	.then(function(response){
+			        		resolve(response);
+			        	})
+			    })
+		    }
+		}]);
+		//在控制器中加载该模块
+		app.controller('myAppCon', ['$scope','mydata',function($scope, mydata) {
+			//使用该模块
+		    var promise = mydata.getdata();
+		    promise.then(function(response){
+		    	console.log(response);
+		    })
+		}]);
+	</script>
+</html>

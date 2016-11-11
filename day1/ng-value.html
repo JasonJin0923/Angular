@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>angular directive</title>
+	<script src="../lib/angular.min.1.5.js"></script>
+	
+</head>
+<body>
+	
+<div ng-app="myApp">
+	<div ng-controller="myCon">
+		<h2>请选择</h2>
+	    <label ng-repeat="name in names">
+	       {{ name }}
+	       <input type="radio" ng-model="my.favorite" ng-value="name" name="favorite">
+	    </label>
+	    <div>你的选择是 ： {{my.favorite}}</div>
+	</div>
+</div>
+
+<script>
+	//一个页面只允许有一个app
+	var app = angular.module('myApp', []);                   //创建一个moudle对象
+	//绑定一个控制器
+	//注入服务
+	//$scope 是一个服务  表示当前控制器
+	app.controller('myCon', ['$scope',function($scope) {
+		$scope.names = ['A', 'B', 'C'];
+       	$scope.my = { favorite: 'A' };
+		
+	}]);
+	
+</script>
+
+</body>
+</html>

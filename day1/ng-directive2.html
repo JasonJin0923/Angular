@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>angular directive</title>
+	<script src="../lib/angular.min.1.5.js"></script>
+</head>
+<body>
+	
+<div ng-app="myApp">
+	<div ng-controller="myCon" ng-init="text='hello angular.js'">
+		
+		<div ng-show="state">
+			表达式为：{{state}}-<p ng-bind="text"></p>
+		</div>
+		<div ng-show="!state">
+			表达式为：{{state}}- <p>啦啦啦啦啦啦</p>
+		</div>
+		<button ng-click="click(true)">显示</button>
+		<button ng-click="click(false)">隐藏</button>
+		<hr/>
+		<p ng-repeat="item in items">
+			<span ng-if="$first">
+				第一个 : {{ item }}
+			</span>
+			<span ng-if="!$first&&!$last" >
+				第{{$index+1}}个:{{ item }}
+			</span>
+			<span ng-if="$last">
+				最后一个:{{ item }}
+			</span>
+		</p>
+		<hr />
+		
+	</div>
+</div>
+
+<script>
+	//一个页面只允许有一个app
+	var app = angular.module('myApp', []);                   //创建一个moudle对象
+	//绑定一个控制器
+	//注入服务
+	//$scope 是一个服务  表示当前控制器
+	app.controller('myCon', ['$scope',function($scope) {
+		$scope.click = function(state){
+			$scope.state = state;
+		}
+		$scope.items = ["a","b","c","d"];
+	}]);
+	
+</script>
+
+</body>
+</html>

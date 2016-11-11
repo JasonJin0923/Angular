@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="../lib/angular.min.1.5.js" ></script>
+	</head>
+	<body>
+		<div ng-app="myApp" ng-controller="myAppCon">
+			<style>
+				.test{
+					transition: all 0.5s;
+					color: #000;
+					font-size: 14px;
+				}
+				.cls1{
+					font-size: 24px;
+				}
+				.cls2{
+					color: red;
+				}
+			</style>
+			<div class="test {{ classname }}">
+				点击按钮测试
+			</div>
+			<hr/>
+			<button ng-click="cls1_click('cls1')">添加 cls1 样式</button>
+			<button ng-click="cls1_click('cls2')">添加 cls2 样式</button>
+		</div>
+		<script>
+			angular.module('myApp', [])
+				.controller('myAppCon',['$scope',function($scope){
+					$scope.cls1_click = function(classname){
+						$scope.classname = classname;
+					}
+				}]);
+		</script>
+	</body>
+</html>

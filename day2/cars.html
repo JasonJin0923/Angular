@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>购物车效果</title>
+		<link rel="stylesheet" href="main.css" />
+		<script src="../lib/angular.min.1.5.js"></script>
+	</head>
+	<body>
+		<div ng-app="MyApp">
+			<div ng-controller="shop-list">
+				<!--商品分类-->
+				<div class="class-list clearfix">
+					<label class="item" ng-repeat="(key,item) in data">
+				       {{ item.name }}
+				       <input type="radio" ng-model="curItemKey.id" ng-value="key" name="favorite">
+				    </label>
+				</div>
+				
+				
+				
+				<hr />
+				<p>{{ curItemKey | json}}</p>
+				<hr/>
+				<ul>
+					<li ng-repeat="(id,item) in showDate.childs">
+						<p>{{ item.name }}</p>
+						<p>{{ item.price }}</p>
+						
+						<button ng-click="joinShopCar(id,item)">购买</button>
+						<p>--------------</p>
+					</li>
+				</ul>
+				
+				<hr/>
+				
+				<h1>购物车详细信息</h1>
+				
+				<ul class="select-shop">
+					<li>
+						<label>
+							全选
+							<input type="checkbox" value=""/>
+						</label>
+						<p>商品名称</p>
+						<p>商品价格</p>
+						<p>购买数量</p>
+					</li>
+					<li ng-repeat = "(key,item) in carsDate">
+						<label>
+							<input type="checkbox" value="" ng-model="carsTrue[key]"/>
+						</label>
+						<p>{{ item.name }}</p>
+						<p>{{ item.price }}</p>
+						<p>{{ item.count }}</p>
+					</li>
+					<li>
+						<p>
+							<span>总数量: {{ carsShops | numsum }}</span>
+							<span>总价格: {{ carsShops | pricesum }}</span>
+						</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		<script>
+			var app = angular.module("MyApp",[]);
+			app.controller("shop-list",[
+				"$scope","$http",
+				function($scope,$http){
+					$scope.curItemKey = {};
+					$scope.data = {};  //商品数据默认为空
+					//存放显示的列表数据 
+					$scope.showDate = {};
+					// 发起请求，获取 json 数据
+					$http.get("./data.json")
+						.then(function(response){
+							$scope.data = response.data;
+							$scope.curItemKey = {
+								"id":Object.keys($scope.data)[0]
+							};
+						});
+				
+					//监听当前控制器下的数据的变化
+					$scope.$watch('curItemKey',function(newValue,oldValue){
+						$scope.showDate = $scope.data[newValue.id];
+					},true);
+					
+					// 点击购买的 click 事件
+					$scope.carsDate = {};
+					$scope.carsTrue = {};                //储存各个多选框的状态
+					$scope.carsShops = {};               //储存选中商品信息
+					$scope.joinShopCar = function(id,item){
+						var shopInfo = Object.assign({},item);
+						shopInfo.count = 1;
+						if(id in $scope.carsDate){
+							$scope.carsDate[id].count += shopInfo.count;
+							
+						}else{
+							$scope.carsDate[id] = shopInfo;
+							
+						}
+						
+					};
+					$scope.$watch('carsTrue',function(newValue,oldValue,scope){
+						for( var key in $scope.carsTrue){
+							if($scope.carsTrue[key]){
+								$scope.carsShops[key] = $scope.carsDate[key];
+							}else{
+								var objecta = Object.assign({},$scope.carsDate[key]);
+								$scope.carsShops[key] = objecta;
+								$scope.carsShops[key].count = 0;
+							}
+						}
+						console.log($scope.carsShops);
+					},true);
+			}])
+			app.filter('numsum',function(){
+				function sum(carsShops){
+					var count = 0;
+					for( var key in carsShops){
+						var item = carsShops[key];
+						count += item.count
+					}
+					return count;
+				}
+				return sum;
+			})
+			app.filter('pricesum',function(){
+				function sum(carsShops){
+					var prices = 0;
+					for( var key in carsShops){
+						var item = carsShops[key];
+						prices += item.count * item.price;
+					}
+					return prices;
+				}
+				return sum;
+			})
+		</script>
+	</body>
+</html>
